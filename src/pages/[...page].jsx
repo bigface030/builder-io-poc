@@ -5,14 +5,13 @@ import { BuilderComponent, builder, useIsPreviewing } from "@builder.io/react";
 import { BuilderContent } from "@builder.io/sdk";
 import DefaultErrorPage from "next/error";
 import Head from "next/head";
-import { GetStaticProps } from "next";
 
 // Replace with your Public API Key
 builder.init(process.env.NEXT_PUBLIC_BUILDER_API_KEY);
 
 // Define a function that fetches the Builder
 // content for a given page
-export const getStaticProps = async ({ params }) => {
+export const getServerSideProps = async ({ params }) => {
   // Fetch the builder content for the given page
   const page = await builder
     .get("page", {
@@ -27,27 +26,8 @@ export const getStaticProps = async ({ params }) => {
     props: {
       page: page || null,
     },
-    // Revalidate the content every 5 seconds
-    revalidate: 5,
   };
 };
-
-// Define a function that generates the
-// static paths for all pages in Builder
-export async function getStaticPaths() {
-  // Get a list of all pages in Builder
-  const pages = await builder.getAll("page", {
-    // We only need the URL field
-    fields: "data.url",
-    options: { noTargeting: true },
-  });
-
-  // Generate the static paths for all pages in Builder
-  return {
-    paths: pages.map((page) => `${page.data?.url}`).filter(url => url !== '/'),
-    fallback: 'blocking',
-  };
-}
 
 // Define the Page component
 export default function Page({ page }) {

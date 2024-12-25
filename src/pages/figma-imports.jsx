@@ -9,7 +9,7 @@ builder.init(process.env.NEXT_PUBLIC_BUILDER_API_KEY);
 
 // Define a function that fetches the Builder
 // content for a given page
-export const getStaticProps = async ({ params }) => {
+export const getServerSideProps = async ({ params }) => {
   await params;
   // Fetch the builder content for the given page
   const page = await builder
@@ -25,8 +25,6 @@ export const getStaticProps = async ({ params }) => {
     props: {
       page: page || null,
     },
-    // Revalidate the content every 5 seconds
-    revalidate: 5,
   };
 };
 
