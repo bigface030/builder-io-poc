@@ -21,16 +21,22 @@ export const getServerSideProps = async ({ params }) => {
     })
     .toPromise();
 
+  const data = {
+    userName: "Ella Jones",
+    isLogin: false,
+  }
+
   // Return the page content as props
   return {
     props: {
       page: page || null,
+      data: data || null,
     },
   };
 };
 
 // Define the Page component
-export default function Page({ page }) {
+export default function Page({ page, data }) {
   const router = useRouter();
   const isPreviewing = useIsPreviewing();
 
@@ -48,7 +54,11 @@ export default function Page({ page }) {
         <title>{page?.data?.title}</title>
       </Head>
       {/* Render the Builder page */}
-      <BuilderComponent model="page" content={page || undefined} />
+      <BuilderComponent
+        model="page"
+        content={page || undefined}
+        data={data || undefined}
+      />
     </>
   );
 }
