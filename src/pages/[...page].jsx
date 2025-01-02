@@ -40,6 +40,10 @@ export default function Page({ page, data }) {
   const router = useRouter();
   const isPreviewing = useIsPreviewing();
 
+  const context = {
+    handleButtonClick: () => alert("hi!")
+  }
+
   // If the page content is not available
   // and not in preview mode, show a 404 error page
   if (!page && !isPreviewing) {
@@ -58,6 +62,7 @@ export default function Page({ page, data }) {
         model="page"
         content={page || undefined}
         data={data || undefined}
+        context={context}
       />
     </>
   );
