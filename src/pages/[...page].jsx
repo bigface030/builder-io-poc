@@ -11,7 +11,7 @@ builder.init(process.env.NEXT_PUBLIC_BUILDER_API_KEY);
 
 // Define a function that fetches the Builder
 // content for a given page
-export const getServerSideProps = async ({ params }) => {
+export const getStaticProps = async ({ params }) => {
   // Fetch the builder content for the given page
   const page = await builder
     .get("page", {
@@ -20,6 +20,8 @@ export const getServerSideProps = async ({ params }) => {
       },
     })
     .toPromise();
+
+  console.log('[test] builder api called!')
 
   const data = {
     userName: "Ella Jones",
@@ -34,6 +36,25 @@ export const getServerSideProps = async ({ params }) => {
     },
   };
 };
+
+// Define a function that generates the
+// static paths for all pages in Builder
+export async function getStaticPaths() {
+  // Get a list of all pages in Builder
+  const pages = await builder.getAll("page", {
+    // We only need the URL field
+    fields: "data.url",
+    options: { noTargeting: true },
+  });
+
+  console.log('[test] builder api called!')
+
+  // Generate the static paths for all pages in Builder
+  return {
+    paths: pages.map((page) => `${page.data?.url}`).filter(url => url !== '/'),
+    fallback: 'blocking',
+  };
+}
 
 // Define the Page component
 export default function Page({ page, data }) {
