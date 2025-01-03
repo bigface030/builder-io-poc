@@ -9,7 +9,7 @@ builder.init(process.env.NEXT_PUBLIC_BUILDER_API_KEY);
 
 // Define a function that fetches the Builder
 // content for a given page
-export const getServerSideProps = async ({ params }) => {
+export const getStaticProps = async ({ params }) => {
   await params;
   // Fetch the builder content for the given page
   const page = await builder
